@@ -2,7 +2,7 @@ function App() {
 
   return (
     <>
-      Recurio! this is poppins isnt it 
+      Recurio!
     </>
   )
 }
