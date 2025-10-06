@@ -5,8 +5,10 @@
     --color-accent: #FF9611;
     --color-neutral-250: #F0F0F0;
     --color-neutral-925: #1E1E1E;
+    --font-radley: 'Radley', serif;
 }
 
 body {
     font-family: 'Poppins';
+    color: var(--color-neutral-950);
 }
