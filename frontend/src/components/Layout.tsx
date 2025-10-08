@@ -11,7 +11,7 @@ const Layout = ({children }: LayoutProps) => {
       
       <Navbar />
 
-      <main className="w-full flex-1 p-20 md:p-16 px-4">
+      <main className="w-full flex-1 p-20 sm:p-16 px-4">
         {children}
       </main>
 
