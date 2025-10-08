@@ -6,9 +6,11 @@ const Navbar = () => {
   const [activePage, setActivePage] = useState("home");
 
   return (
-    <nav className="fixed top-0 flex items-center justify-between w-full px-3 md:px-9 md:py-6 backdrop-blur-md bg-neutral-50/1">
-      <a href="/" className="hidden sm:block"><Logo /></a>
-      <div className="flex flex-row gap-4">
+    <nav className="fixed bottom-0 sm:top-0 sm:h-20 flex items-center justify-between w-full sm:px-9 md:py-6 backdrop-blur-md bg-neutral-50/1">
+      <a href="/" className="hidden sm:block">
+        <Logo />
+      </a>
+      <div className="flex flex-row justify-between gap-4 w-full sm:w-auto">
         <NavbarButton
           icon={"icon-park-solid:add"}
           title={"Add subscription"}
@@ -28,6 +30,7 @@ const Navbar = () => {
           iconSize={32}
           isActive={activePage === "my-subscriptions"}
           onClick={() => setActivePage("my-subscriptions")}
+          className="px-2.5"
         ></NavbarButton>
         <NavbarButton
           icon={"mdi:user"}
