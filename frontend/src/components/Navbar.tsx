@@ -7,10 +7,7 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-0 flex items-center justify-between w-full px-3 md:px-9 md:py-6 backdrop-blur-md bg-neutral-50/1">
-      <a href="/">
-        {" "}
-        <Logo />{" "}
-      </a>
+      <a href="/" className="hidden sm:block"><Logo /></a>
       <div className="flex flex-row gap-4">
         <NavbarButton
           icon={"icon-park-solid:add"}
