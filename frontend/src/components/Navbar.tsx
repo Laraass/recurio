@@ -2,7 +2,12 @@ import { useState } from "react";
 import NavbarButton from "./NavbarButton";
 import Logo from "./Logo";
 
-const Navbar = () => {
+
+interface NavbarProps {
+    isAdmin?: boolean;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ isAdmin = true }) => {
   const [activePage, setActivePage] = useState("home");
 
   return (
@@ -38,6 +43,14 @@ const Navbar = () => {
           isActive={activePage === "profile"}
           onClick={() => setActivePage("profile")}
         ></NavbarButton>
+
+        {isAdmin && (
+            <NavbarButton icon={"dashicons:shield"} title={"Admin dashboard"} isActive={activePage === "admin"}
+            onClick={() => setActivePage("admin")}>
+
+            </NavbarButton>
+        )}
+
       </div>
     </nav>
   );
