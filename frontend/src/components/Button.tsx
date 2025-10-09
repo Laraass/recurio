@@ -10,7 +10,7 @@ const Button: React.FC<ButtonProps> = ({
   onClick,
   variant = "default",
   type = "button",
-  className = "rounded-",
+  className = "",
 }) => {
   const styles = {
     default: " bg-primary hover:bg-accent active:bg-accent",
