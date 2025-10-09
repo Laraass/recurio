@@ -12,10 +12,7 @@ interface CategoryProps {
   className?: string;
 }
 
-const Category: React.FC<CategoryProps> = ({
-  category,
-  className = "",
-}) => {
+const Category: React.FC<CategoryProps> = ({ category, className = "" }) => {
   const categoryColor: Record<CategoryProps["category"], string> = {
     Entertainment: "text-red-500",
     Music: "text-purple-500",
@@ -27,8 +24,12 @@ const Category: React.FC<CategoryProps> = ({
   };
 
   return (
-    <div className="">
-      <Icon icon="material-symbols:circle" className={`${categoryColor[category]}`}></Icon>
+    <div className="flex items-center gap-1">
+      <Icon
+        icon="material-symbols:circle"
+        className={`size-6 ${categoryColor[category]} ${className}`}
+      />
+      <span className="text-base font-medium cursor-default">{category}</span>
     </div>
   );
 };
