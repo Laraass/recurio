@@ -23,7 +23,12 @@ const InputField: React.FC<InputFieldProps> = ({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className={`px-4 py-3 rounded-xl cursor-pointer border border-neutral-400  placeholder-gray-500 placeholder-opacity-100 transition-colors duration-200 focus:outline-none shadow-[0_2px_4px_0_rgba(0,0,0,0.25)] focus:shadow-[0_2px_4px_0_rgba(0,0,0,0.45)] ${className}`}
+        className={`
+            px-4 py-3 rounded-xl cursor-pointer border border-neutral-400 
+            placeholder-gray-500 placeholder-opacity-100 transition-colors 
+            duration-200 focus:outline-none shadow-[0_2px_4px_0_rgba(0,0,0,0.25)] 
+            focus:shadow-[0_2px_4px_0_rgba(0,0,0,0.45)] 
+            ${className}`}
       ></input>
     </div>
   );
