@@ -13,7 +13,7 @@ const Button: React.FC<ButtonProps> = ({
   className = "",
 }) => {
   const styles = {
-    default: " bg-primary hover:bg-accent active:bg-accent",
+    default: "bg-primary hover:bg-accent active:bg-accent",
     dark: "bg-neutral-950 text-neutral-50 hover:text-primary active:text-primary",
   };
 
