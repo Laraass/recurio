@@ -19,18 +19,18 @@ const Category: React.FC<CategoryProps> = ({
   className = "",
 }) => {
   const categoryColor: Record<CategoryProps["category"], string> = {
-    Entertainment: "",
-    Music: "",
-    Fitness: "",
-    Cloud: "",
-    Shopping: "",
-    News: "",
-    Productivity: "",
+    Entertainment: "text-red-500",
+    Music: "text-purple-500",
+    Fitness: "text-emerald-500",
+    Cloud: "text-sky-500",
+    Shopping: "text-orange-500",
+    News: "text-yellow-400",
+    Productivity: "text-gray-500",
   };
 
   return (
     <div className="">
-      <Icon icon="material-symbols:circle"></Icon>
+      <Icon icon="material-symbols:circle" className={`${categoryColor[category]}`}></Icon>
     </div>
   );
 };
