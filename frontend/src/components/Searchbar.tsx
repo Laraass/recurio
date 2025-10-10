@@ -30,7 +30,7 @@ const Searchbar = ({ onSearch, placeholder = "Search... "}: SearchbarProps) => {
                 >
                 
                 </input>
-                <Icon icon="bitcoin-icons:search-filled" className="size-7.5 text-gray-500" ></Icon>
+                <Icon icon="bitcoin-icons:search-filled" className="size-7.5 text-gray-500 cursor-pointer hover:text-neutral-925 active:text-neutral-925 " onClick={() => onSearch(value)}></Icon>
                 
         </div>
 
