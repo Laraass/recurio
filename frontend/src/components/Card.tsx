@@ -54,6 +54,21 @@ const Card: React.FC<CardProps> = ({
           </div>
         </div>
       )}
+      {variant === "Company" && (
+        <div className="flex items-center w-full justify-between">
+          <div className="flex gap-4 items-center">
+            {image && (
+              <img src={image} alt={company} className="size-12 flex" />
+            )}
+            <div className="flex flex-col">
+              {company && <p className="text-lg font-medium">{company}</p>}
+            </div>
+          </div>
+          <button title="Add subscription" onClick={onAdd}>
+          <Icon icon="icon-park-solid:add" className="size-9 text-primary hover:text-accent active:text-accent cursor-pointer" />
+        </button>
+        </div>
+      )}
     </div>
   );
 };
