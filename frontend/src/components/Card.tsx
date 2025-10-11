@@ -22,6 +22,19 @@ const Card: React.FC<CardProps> = ({
   return (
     <div className="flex items-center bg-neutral-50 border-b border-neutral-400 p-5 cursor-default">
       
+      {variant === "Sub" && (
+        <div className="flex items-center w-full justify-between">
+          <div className="flex gap-4 items-center">
+            {image && <img src={image} alt={company} className="size-12" />}
+
+            <div className="flex flex-col">
+              {company && <p className="text-lg font-medium">{company}</p>}
+              {description && <p className="text-xs line-clamp-1 pr-5">{description}</p>}
+            </div>
+          </div>
+          {price && <p>{price}</p>}
+        </div>
+      )}
     </div>
   );
 };
