@@ -35,6 +35,25 @@ const Card: React.FC<CardProps> = ({
           {price && <p>{price}</p>}
         </div>
       )}
+      {variant === "MySub" && (
+        <div className="flex items-center w-full justify-between">
+          <div className="flex gap-4 items-center">
+            {image && (
+              <img src={image} alt={company} className="size-12 flex" />
+            )}
+            <div className="flex flex-col">
+              {company && <p className="text-lg font-medium">{company}</p>}
+              {price && <p className="text-xs">{price}</p>}
+              {description && <p className="text-xs line-clamp-1 pr-5">{description}</p>}
+              
+            </div>
+          </div>
+          <div className="flex flex-col items-center gap-1">
+            <EditButton />
+            <DeleteButton />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
