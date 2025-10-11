@@ -21,7 +21,6 @@ const Card: React.FC<CardProps> = ({
 }) => {
   return (
     <div className="flex items-center bg-neutral-50 border-b border-neutral-400 p-5 cursor-default">
-      
       {variant === "Sub" && (
         <div className="flex items-center w-full justify-between">
           <div className="flex gap-4 items-center">
@@ -29,7 +28,9 @@ const Card: React.FC<CardProps> = ({
 
             <div className="flex flex-col">
               {company && <p className="text-lg font-medium">{company}</p>}
-              {description && <p className="text-xs line-clamp-1 pr-5">{description}</p>}
+              {description && (
+                <p className="text-xs line-clamp-1 pr-5">{description}</p>
+              )}
             </div>
           </div>
           {price && <p>{price}</p>}
@@ -44,8 +45,9 @@ const Card: React.FC<CardProps> = ({
             <div className="flex flex-col">
               {company && <p className="text-lg font-medium">{company}</p>}
               {price && <p className="text-xs">{price}</p>}
-              {description && <p className="text-xs line-clamp-1 pr-5">{description}</p>}
-              
+              {description && (
+                <p className="text-xs line-clamp-1 pr-5">{description}</p>
+              )}
             </div>
           </div>
           <div className="flex flex-col items-center gap-1">
@@ -65,8 +67,11 @@ const Card: React.FC<CardProps> = ({
             </div>
           </div>
           <button title="Add subscription" onClick={onAdd}>
-          <Icon icon="icon-park-solid:add" className="size-9 text-primary hover:text-accent active:text-accent cursor-pointer" />
-        </button>
+            <Icon
+              icon="icon-park-solid:add"
+              className="size-9 text-primary hover:text-accent active:text-accent cursor-pointer"
+            />
+          </button>
         </div>
       )}
     </div>
