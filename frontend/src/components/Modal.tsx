@@ -15,6 +15,8 @@ interface ModalProps {
     description?: string;
     price?: string;
   };
+
+  confirmMessage?: string;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -25,6 +27,7 @@ const Modal: React.FC<ModalProps> = ({
   company,
   image,
   defaultValue,
+  confirmMessage,
 }) => {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -129,6 +132,28 @@ const Modal: React.FC<ModalProps> = ({
                 </Button>
               </div>
             </form>
+          </>
+        )}
+
+        {variant === "Confirm" && (
+          <>
+            <h2 className="text-2xl font-semibold">Wait!</h2>
+            <p className="font-medium">{confirmMessage}</p>
+
+            <div className="flex items-start gap-4">
+              <Button
+                type="button"
+                onClick={() => {
+                  onSubmit({ description: "", price: "" });
+                  onClose();
+                }}
+              >
+                Confirm
+              </Button>
+              <Button type="button" variant="dark" onClick={onClose}>
+                Cancel
+              </Button>
+            </div>
           </>
         )}
       </div>
