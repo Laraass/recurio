@@ -1,16 +1,28 @@
+import dotenv from "dotenv";
 import fastify from "fastify";
+import { connectDB } from "./plugins/db";
 
-const server = fastify()
+dotenv.config();
+
+const server = fastify();
 
 server.get("/", function (request, reply) {
-    reply.send({ hello: "world" })
-})
+  reply.send({ hello: "world" });
+});
 
-server.listen({ port: 3000}, function (err, PORT) {
-    if (err) {
-        server.log.error(err)
-        process.exit(1)
-    }
+const start = async () => {
+  try {
+    await connectDB();
+    console.log("Database connected");
+    const PORT = await server.listen({
+      port: Number(process.env.PORT) || 3000,
+      host: "0.0.0.0",
+    });
+    console.log(`Server is running on ${PORT}`);
+  } catch (err) {
+    server.log.error(err);
+    process.exit(1);
+  }
+};
 
-    console.log(`Server is now listening on ${PORT}`)
-})
+start();
