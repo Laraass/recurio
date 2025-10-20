@@ -29,6 +29,14 @@ const UserSchema = new Schema<IUser>(
             required: true,
             minlength: 6,
         },
+        image: {
+            type: String,
+            default: function (this: IUser) {
+                const baseUrl = "https://ui-avatars.com/api/"
+                const userName = encodeURIComponent(this.name || "User")
+                return `${baseUrl}?name=${userName}&background=random&color=0a0a0a`
+            }
+        }
     },
     { timestamps: true },
        
