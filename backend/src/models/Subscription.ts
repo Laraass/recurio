@@ -26,6 +26,9 @@ const SubscriptionSchema = new Schema<ISubscription>(
             type: String,
             trim: true,
         },
+        image: {
+            type: String,
+        },
         userId: {
             type: Schema.Types.ObjectId,
             ref: "User",
