@@ -1,4 +1,4 @@
-import { Document } from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
 import { IUser } from "./User";
 
 export interface ISubscription extends Document {
@@ -11,3 +11,30 @@ export interface ISubscription extends Document {
     updatedAt: Date;
 }
 
+const SubscriptionSchema = new Schema<ISubscription>(
+    {
+        company: { 
+            type: String,
+            required: true,
+            trim: true,
+        },
+        price: {
+            type: Number,
+            required: true,
+        },
+        description: {
+            type: String,
+            trim: true,
+        },
+        userId: {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+        },
+    },
+    { timestamps: true }
+)
+
+export const Subscription = mongoose.model<ISubscription>(
+    "Subscription",
+    SubscriptionSchema
+)
