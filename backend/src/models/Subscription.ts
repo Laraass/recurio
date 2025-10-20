@@ -6,7 +6,7 @@ export interface ISubscription extends Document {
     price: number;
     description?: string;
     image?: string;
-    userId: IUser["_id"];
+    userId?: IUser["_id"];
     createdAt: Date;
     updatedAt: Date;
 }
