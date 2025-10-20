@@ -36,6 +36,11 @@ const UserSchema = new Schema<IUser>(
                 const userName = encodeURIComponent(this.name || "User")
                 return `${baseUrl}?name=${userName}&background=random&color=0a0a0a`
             }
+        },
+        role: {
+            type: String,
+            enum: ["default", "subscriber", "admin"],
+            default: "default",
         }
     },
     { timestamps: true },
