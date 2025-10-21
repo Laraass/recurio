@@ -4,11 +4,16 @@ import bcrypt from "bcryptjs";
 
 export const registerUser = async (request: FastifyRequest, reply: FastifyReply) => {
     try{
-        const { name, email, password } = request.body as {
+        const { name, email, password, confirmPassword } = request.body as {
             name: string, 
             email: string, 
             password: string
+            confirmPassword: string,
         };
+
+        if (password !== confirmPassword) {
+            return reply.status(400).send({ error: "Passwords do not match" });
+        }
 
         const hashPassword = await bcrypt.hash(password, 10);
 
