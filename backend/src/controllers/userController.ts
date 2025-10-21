@@ -29,3 +29,22 @@ export const registerUser = async (request: FastifyRequest, reply: FastifyReply)
     }
 }
 
+
+export const loginUser = async (request: FastifyRequest, reply: FastifyReply) => {
+    try {
+        const { email, password } = request.body as {
+            email: string,
+            password: string,
+        }
+
+        const user = await User.findOne({ email });
+        if (!user) return reply.status(401).send({ error: "Invalid credentials" })
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) return reply.status(401).send({ error: "Invalid credentials" })
+
+        reply.send({ message: "Log in successful", userId: user._id })
+    } catch (error) {
+        reply.status(500).send({ error: "Log in failed", details: error })
+    }
+}
