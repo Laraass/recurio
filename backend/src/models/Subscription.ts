@@ -4,6 +4,7 @@ import { IUser } from "./User";
 export interface ISubscription extends Document {
   company: string;
   price: number;
+  category: string;
   description?: string;
   image?: string;
   userId?: IUser["_id"];
@@ -21,6 +22,18 @@ const SubscriptionSchema = new Schema<ISubscription>(
     price: {
       type: Number,
       required: true,
+    },
+    category: {
+      type: String,
+      enum: [
+        "Entertainment",
+        "Music",
+        "Fitness",
+        "Cloud",
+        "Shopping",
+        "News",
+        "Productivity",
+      ]
     },
     description: {
       type: String,
