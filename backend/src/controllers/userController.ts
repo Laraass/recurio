@@ -72,3 +72,15 @@ export const logoutUser = async (request: FastifyRequest, reply: FastifyReply) =
 }
 
 
+export const getProfile = async (request: FastifyRequest, reply: FastifyReply) => {
+    try {
+        const userId = (request as any).userId;
+
+        const user = await User.findById(userId).select("-password");
+        if (!user) return reply.status(404).send({ error: "User not found" })
+
+        reply.send ({ user })
+    } catch (error) {
+        reply.status(500).send({ error: "Failed to fetch profile", details: error })
+    }
+}
