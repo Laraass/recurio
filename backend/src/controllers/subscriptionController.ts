@@ -10,3 +10,14 @@ export const listAllSubscriptions = async (request: FastifyRequest, reply: Fasti
     }
 }
 
+export const listUserSubscriptions = async (request: FastifyRequest, reply: FastifyReply) => {
+    try {
+        const { userId } = request.params as { userId: string };
+
+        const subscriptions = await Subscription.find({ userId })
+        reply.send({ subscriptions })
+    } catch (error) {
+        reply.status(500).send({ error: "Failed to fetch user subscriptions", details: error })
+    }
+}
+
