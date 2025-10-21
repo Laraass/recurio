@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { User } from "../models/User";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 export const registerUser = async (request: FastifyRequest, reply: FastifyReply) => {
     try{
@@ -43,7 +44,23 @@ export const loginUser = async (request: FastifyRequest, reply: FastifyReply) =>
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return reply.status(401).send({ error: "Invalid credentials" })
 
-        reply.send({ message: "Log in successful", userId: user._id })
+        const token = jwt.sign(
+            { userId: user._id, role: user.role },
+            process.env.JWT_SECRET || "secretkey",
+            { expiresIn: "7d" }
+        )
+
+        reply.send({
+            message: "Log in successful",
+            token,
+            user: {
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                image: user.image,
+            }
+        })
     } catch (error) {
         reply.status(500).send({ error: "Log in failed", details: error })
     }
