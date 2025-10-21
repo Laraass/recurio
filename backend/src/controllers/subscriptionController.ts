@@ -49,3 +49,21 @@ export const addSubscription = async (request: FastifyRequest, reply: FastifyRep
         reply.status(500).send({ error: "Failed to add subscription", details: error })
     }
 }
+
+export const editSubscription = async (request: FastifyRequest, reply: FastifyReply) => {
+    try {
+        const { id } = request.params as { id: string }
+        const edit = request.body as Partial<{
+            price: number;
+            description: string;
+        }>;
+
+        const subscription = await Subscription.findByIdAndUpdate(id, edit, { new: true })
+        if (!subscription) return reply.status(404).send({ error: "Subscription not found"})
+
+        reply.send({ message: "Subscription edited", subscription })
+        } catch (error) {
+        reply.status(500).send({ error: "Failed to edit subscription", details: error })
+    }
+}
+
