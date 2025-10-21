@@ -65,3 +65,10 @@ export const loginUser = async (request: FastifyRequest, reply: FastifyReply) =>
         reply.status(500).send({ error: "Log in failed", details: error })
     }
 }
+
+
+export const logoutUser = async (request: FastifyRequest, reply: FastifyReply) => {
+    reply.send({ message: "Log out successful"})
+}
+
+
