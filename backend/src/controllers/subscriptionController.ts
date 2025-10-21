@@ -67,3 +67,16 @@ export const editSubscription = async (request: FastifyRequest, reply: FastifyRe
     }
 }
 
+export const deleteSubscription = async (request: FastifyRequest, reply: FastifyReply) => {
+    try {
+        const { id } = request.params as { id: string };
+        const subscription = await Subscription.findByIdAndDelete(id);
+        if (!subscription) return reply.status(404).send({ error: "Subscription not found" })
+
+        reply.send({ message: "Subscription deleted" })
+    } catch (error) {
+        reply.status(500).send({ error: "Failed to delete subscription", details: error})
+    }
+}
+
+// Statistics functions here 
