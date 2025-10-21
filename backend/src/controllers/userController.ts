@@ -84,3 +84,17 @@ export const getProfile = async (request: FastifyRequest, reply: FastifyReply) =
         reply.status(500).send({ error: "Failed to fetch profile", details: error })
     }
 }
+
+
+export const subscribeEmail = async (request: FastifyRequest, reply: FastifyReply) => {
+    try {
+        const userId = (request as any).userId;
+
+        const user = await User.findByIdAndUpdate(userId, {role: "subscriber" }, {new: true })
+        if (!user) return reply.status(404).send({ error: "User not found"})
+
+        reply.send({ message: "Subscribed to emails", user })
+    } catch (error) {
+        reply.status(500).send({ error: "Failed to subscribe to emails", details: error })
+    }
+}
