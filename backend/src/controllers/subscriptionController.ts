@@ -67,6 +67,10 @@ export const editSubscription = async (request: FastifyRequest, reply: FastifyRe
             description?: string;
         }
 
+        if (!price ) {
+            return reply.status(400).send({ error: "Price is required"})
+        }
+
         const subscription = await Subscription.findByIdAndUpdate(id, { price, description }, { new: true })
         if (!subscription) return reply.status(404).send({ error: "Subscription not found"})
 
