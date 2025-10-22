@@ -99,24 +99,27 @@ export const getProfile = async (
   }
 };
 
-export const subscribeEmail = async (
+export const toggleSubscription = async (
   request: FastifyRequest,
   reply: FastifyReply
 ) => {
   try {
     const userId = (request as any).userId;
 
-    const user = await User.findByIdAndUpdate(
-      userId,
-      { role: "subscriber" },
-      { new: true }
-    );
+    const user = await User.findById(userId);
     if (!user) return reply.status(404).send({ error: "User not found" });
 
-    reply.send({ message: "Subscribed to emails", user });
+    const willSubscribe = user.role !== "subscriber";
+    user.role = willSubscribe ? "subscriber" : "default";
+    await user.save();
+
+    reply.send({
+      message: `Subscription ${willSubscribe ? "enabled" : "disabled"}`,
+      user,
+    });
   } catch (error) {
     reply
       .status(500)
-      .send({ error: "Failed to subscribe to emails", details: error });
+      .send({ error: "Failed to update subscription status", details: error });
   }
 };
