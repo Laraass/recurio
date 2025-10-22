@@ -1,5 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { Subscription } from "../models/Subscription";
+import { subscriptions } from "../data/subscriptions";
 
 export const listAllSubscriptions = async (request: FastifyRequest, reply: FastifyReply) => {
     try {
@@ -21,27 +22,30 @@ export const listUserSubscriptions = async (request: FastifyRequest, reply: Fast
     }
 }
 
- // change when sub data is added
 export const addSubscription = async (request: FastifyRequest, reply: FastifyReply) => {
     try {
         const { userId } = request.params as { userId: string };
-        const { price, description, company, image } = request.body as {
+        const { price, description, company } = request.body as {
             price: number;
             description?: string;
-            company?: string;
-            image?: string;
+            company: string;
         }
 
         if (!price ) {
             return reply.status(400).send({ error: "Price is required"})
         }
 
+        const existingSub = subscriptions.find(sub => sub.company === company)
+        if (!existingSub) {
+            return reply.status(400).send({ error: "Invalid subscription" })
+        }
+
         const subscription = await Subscription.create({
             userId,
             price,
             description,
-            company: company || "",
-            image: image || "",
+            company: existingSub.company,
+            image: existingSub.image,
         })
 
         reply.status(201).send({ message: "Subscription added!", subscription})
