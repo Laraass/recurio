@@ -1,9 +1,9 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { Subscription } from "../models/Subscription";
+import { subscriptions } from "../data/subscriptions";
 
 export const listAllSubscriptions = async (request: FastifyRequest, reply: FastifyReply) => {
     try {
-        const subscriptions = await Subscription.find();
         reply.send({ subscriptions })
     } catch (error) {
         reply.status(500).send({ error: "Failed to fetch subscriptions", details: error })
@@ -21,27 +21,35 @@ export const listUserSubscriptions = async (request: FastifyRequest, reply: Fast
     }
 }
 
- // change when sub data is added
 export const addSubscription = async (request: FastifyRequest, reply: FastifyReply) => {
     try {
         const { userId } = request.params as { userId: string };
-        const { price, description, company, image } = request.body as {
+        const { price, description, company } = request.body as {
             price: number;
             description?: string;
-            company?: string;
-            image?: string;
+            company: string;
         }
 
         if (!price ) {
             return reply.status(400).send({ error: "Price is required"})
         }
 
+        const existingSub = subscriptions.find(sub => sub.company === company)
+        if (!existingSub) {
+            return reply.status(400).send({ error: "Invalid subscription" })
+        }
+
+        const alreadyAdded = await Subscription.findOne({ userId, company })
+        if (alreadyAdded) {
+            return reply.status(400).send({ error: "Subscription already added"})
+        }
+
         const subscription = await Subscription.create({
             userId,
             price,
             description,
-            company: company || "",
-            image: image || "",
+            company: existingSub.company,
+            image: existingSub.image,
         })
 
         reply.status(201).send({ message: "Subscription added!", subscription})
@@ -53,12 +61,16 @@ export const addSubscription = async (request: FastifyRequest, reply: FastifyRep
 export const editSubscription = async (request: FastifyRequest, reply: FastifyReply) => {
     try {
         const { id } = request.params as { id: string }
-        const edit = request.body as Partial<{
+        const { price, description } = request.body as {
             price: number;
-            description: string;
-        }>;
+            description?: string;
+        }
 
-        const subscription = await Subscription.findByIdAndUpdate(id, edit, { new: true })
+        if (!price ) {
+            return reply.status(400).send({ error: "Price is required"})
+        }
+
+        const subscription = await Subscription.findByIdAndUpdate(id, { price, description }, { new: true })
         if (!subscription) return reply.status(404).send({ error: "Subscription not found"})
 
         reply.send({ message: "Subscription edited", subscription })
