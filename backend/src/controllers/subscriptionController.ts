@@ -40,6 +40,11 @@ export const addSubscription = async (request: FastifyRequest, reply: FastifyRep
             return reply.status(400).send({ error: "Invalid subscription" })
         }
 
+        const alreadyAdded = await Subscription.findOne({ userId, company })
+        if (alreadyAdded) {
+            return reply.status(400).send({ error: "Subscription already added"})
+        }
+
         const subscription = await Subscription.create({
             userId,
             price,
