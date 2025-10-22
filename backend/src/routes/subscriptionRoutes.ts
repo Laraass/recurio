@@ -3,6 +3,7 @@ import {
   addSubscription,
   deleteSubscription,
   editSubscription,
+  getStatistics,
   listAllSubscriptions,
   listUserSubscriptions,
 } from "../controllers/subscriptionController";
@@ -38,6 +39,6 @@ export default async function subscriptionRoutes(fastify: FastifyInstance) {
   fastify.get(
     "/users/:userId/subscriptions/statistics",
     { preHandler: auth },
-    async (request, reply) => {}
+    getStatistics
   );
 }

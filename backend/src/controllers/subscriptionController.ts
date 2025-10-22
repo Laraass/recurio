@@ -2,93 +2,152 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { Subscription } from "../models/Subscription";
 import { subscriptions } from "../data/subscriptions";
 
-export const listAllSubscriptions = async (request: FastifyRequest, reply: FastifyReply) => {
-    try {
-        reply.send({ subscriptions })
-    } catch (error) {
-        reply.status(500).send({ error: "Failed to fetch subscriptions", details: error })
+export const listAllSubscriptions = async (
+  request: FastifyRequest,
+  reply: FastifyReply
+) => {
+  try {
+    reply.send({ subscriptions });
+  } catch (error) {
+    reply
+      .status(500)
+      .send({ error: "Failed to fetch subscriptions", details: error });
+  }
+};
+
+export const listUserSubscriptions = async (
+  request: FastifyRequest,
+  reply: FastifyReply
+) => {
+  try {
+    const { userId } = request.params as { userId: string };
+
+    const subscriptions = await Subscription.find({ userId });
+    reply.send({ subscriptions });
+  } catch (error) {
+    reply
+      .status(500)
+      .send({ error: "Failed to fetch user subscriptions", details: error });
+  }
+};
+
+export const addSubscription = async (
+  request: FastifyRequest,
+  reply: FastifyReply
+) => {
+  try {
+    const { userId } = request.params as { userId: string };
+    const { price, description, company } = request.body as {
+      price: number;
+      description?: string;
+      company: string;
+    };
+
+    if (!price) {
+      return reply.status(400).send({ error: "Price is required" });
     }
-}
 
-export const listUserSubscriptions = async (request: FastifyRequest, reply: FastifyReply) => {
-    try {
-        const { userId } = request.params as { userId: string };
-
-        const subscriptions = await Subscription.find({ userId })
-        reply.send({ subscriptions })
-    } catch (error) {
-        reply.status(500).send({ error: "Failed to fetch user subscriptions", details: error })
+    const existingSub = subscriptions.find((sub) => sub.company === company);
+    if (!existingSub) {
+      return reply.status(400).send({ error: "Invalid subscription" });
     }
-}
 
-export const addSubscription = async (request: FastifyRequest, reply: FastifyReply) => {
-    try {
-        const { userId } = request.params as { userId: string };
-        const { price, description, company } = request.body as {
-            price: number;
-            description?: string;
-            company: string;
-        }
-
-        if (!price ) {
-            return reply.status(400).send({ error: "Price is required"})
-        }
-
-        const existingSub = subscriptions.find(sub => sub.company === company)
-        if (!existingSub) {
-            return reply.status(400).send({ error: "Invalid subscription" })
-        }
-
-        const alreadyAdded = await Subscription.findOne({ userId, company })
-        if (alreadyAdded) {
-            return reply.status(400).send({ error: "Subscription already added"})
-        }
-
-        const subscription = await Subscription.create({
-            userId,
-            price,
-            description,
-            company: existingSub.company,
-            image: existingSub.image,
-        })
-
-        reply.status(201).send({ message: "Subscription added!", subscription})
-    } catch (error) {
-        reply.status(500).send({ error: "Failed to add subscription", details: error })
+    const alreadyAdded = await Subscription.findOne({ userId, company });
+    if (alreadyAdded) {
+      return reply.status(400).send({ error: "Subscription already added" });
     }
-}
 
-export const editSubscription = async (request: FastifyRequest, reply: FastifyReply) => {
-    try {
-        const { id } = request.params as { id: string }
-        const { price, description } = request.body as {
-            price: number;
-            description?: string;
-        }
+    const subscription = await Subscription.create({
+      userId,
+      price,
+      description,
+      company: existingSub.company,
+      category: existingSub.category,
+      image: existingSub.image,
+    });
 
-        if (!price ) {
-            return reply.status(400).send({ error: "Price is required"})
-        }
+    reply.status(201).send({ message: "Subscription added!", subscription });
+  } catch (error) {
+    reply
+      .status(500)
+      .send({ error: "Failed to add subscription", details: error });
+  }
+};
 
-        const subscription = await Subscription.findByIdAndUpdate(id, { price, description }, { new: true })
-        if (!subscription) return reply.status(404).send({ error: "Subscription not found"})
+export const editSubscription = async (
+  request: FastifyRequest,
+  reply: FastifyReply
+) => {
+  try {
+    const { id } = request.params as { id: string };
+    const { price, description } = request.body as {
+      price: number;
+      description?: string;
+    };
 
-        reply.send({ message: "Subscription edited", subscription })
-        } catch (error) {
-        reply.status(500).send({ error: "Failed to edit subscription", details: error })
+    if (!price) {
+      return reply.status(400).send({ error: "Price is required" });
     }
-}
 
-export const deleteSubscription = async (request: FastifyRequest, reply: FastifyReply) => {
-    try {
-        const { id } = request.params as { id: string };
-        const subscription = await Subscription.findByIdAndDelete(id);
-        if (!subscription) return reply.status(404).send({ error: "Subscription not found" })
+    const subscription = await Subscription.findByIdAndUpdate(
+      id,
+      { price, description },
+      { new: true }
+    );
+    if (!subscription)
+      return reply.status(404).send({ error: "Subscription not found" });
 
-        reply.send({ message: "Subscription deleted" })
-    } catch (error) {
-        reply.status(500).send({ error: "Failed to delete subscription", details: error})
-    }
-}
+    reply.send({ message: "Subscription edited", subscription });
+  } catch (error) {
+    reply
+      .status(500)
+      .send({ error: "Failed to edit subscription", details: error });
+  }
+};
 
-// Statistics functions here 
+export const deleteSubscription = async (
+  request: FastifyRequest,
+  reply: FastifyReply
+) => {
+  try {
+    const { id } = request.params as { id: string };
+    const subscription = await Subscription.findByIdAndDelete(id);
+    if (!subscription)
+      return reply.status(404).send({ error: "Subscription not found" });
+
+    reply.send({
+      message: `Subscription for ${subscription.company} deleted`,
+    });
+  } catch (error) {
+    reply
+      .status(500)
+      .send({ error: "Failed to delete subscription", details: error });
+  }
+};
+
+export const getStatistics = async (
+  request: FastifyRequest,
+  reply: FastifyReply
+) => {
+  try {
+    const { userId } = request.params as { userId: string };
+
+    const userSubscriptions = await Subscription.find({ userId });
+
+    const statistics: Record<string, { count: number; totalSum: number }> = {};
+
+    userSubscriptions.forEach((sub) => {
+      const category = sub.category || "Undefined";
+      if (!statistics[category])
+        statistics[category] = { count: 0, totalSum: 0 };
+
+      statistics[category].count += 1;
+      statistics[category].totalSum += sub.price;
+    });
+    reply.send({ statistics: statistics });
+  } catch (error) {
+    reply
+      .status(500)
+      .send({ error: "Failed to get statistics", details: error });
+  }
+};
