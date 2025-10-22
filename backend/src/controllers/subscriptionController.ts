@@ -115,7 +115,9 @@ export const deleteSubscription = async (
     if (!subscription)
       return reply.status(404).send({ error: "Subscription not found" });
 
-    reply.send({ message: "Subscription deleted" });
+    reply.send({
+      message: `Subscription for ${subscription.company} deleted`,
+    });
   } catch (error) {
     reply
       .status(500)
