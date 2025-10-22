@@ -4,7 +4,7 @@ import {
   loginUser,
   logoutUser,
   registerUser,
-  subscribeEmail,
+  toggleSubscription,
 } from "../controllers/userController";
 import { auth } from "../middleware/auth";
 
@@ -17,5 +17,5 @@ export default async function userRoutes(fastify: FastifyInstance) {
 
   fastify.get("/users/profile", { preHandler: auth }, getProfile);
 
-  fastify.patch("/users/subscribe", { preHandler: auth }, subscribeEmail);
+  fastify.patch("/users/subscribe", { preHandler: auth }, toggleSubscription);
 }
