@@ -49,6 +49,7 @@ export const addSubscription = async (request: FastifyRequest, reply: FastifyRep
             price,
             description,
             company: existingSub.company,
+            category: existingSub.category,
             image: existingSub.image,
         })
 
@@ -91,4 +92,4 @@ export const deleteSubscription = async (request: FastifyRequest, reply: Fastify
     }
 }
 
-// Statistics functions here 
+
