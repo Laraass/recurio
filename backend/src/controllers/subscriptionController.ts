@@ -93,3 +93,23 @@ export const deleteSubscription = async (request: FastifyRequest, reply: Fastify
 }
 
 
+export const getStatistics = async (request: FastifyRequest, reply: FastifyReply) => {
+    try {
+        const { userId } = request.params as { userId: string }
+
+        const userSubscriptions = await Subscription.find({ userId })
+            
+        const statistics: Record<string, { count: number, totalSum: number }> = {}
+
+        userSubscriptions.forEach(sub => {
+            const category = sub.category || "Undefined"
+            if (!statistics[category]) statistics[category] = {count: 0, totalSum: 0 }
+
+            statistics[category].count += 1
+            statistics[category].totalSum += sub.price
+        })
+        reply.send({ statistics: statistics })
+    } catch (error) {
+        reply.status(500).send({ error: "Failed to get statistics", details: error })
+    }
+}
