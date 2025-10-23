@@ -1,12 +1,15 @@
-import { Icon } from "@iconify/react";
+import { BrowserRouter, Routes } from "react-router-dom";
 
 function App() {
-
   return (
-    <>
-      Recurio! <Icon icon="mdi-light:home" className="size-6"/>
-    </>
-  )
+    <BrowserRouter>
+      <Routes>
+
+
+        
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
