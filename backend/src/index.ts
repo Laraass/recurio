@@ -3,19 +3,27 @@ import fastify from "fastify";
 import { connectDB } from "./plugins/db";
 import userRoutes from "./routes/userRoutes";
 import subscriptionRoutes from "./routes/subscriptionRoutes";
+import cors from "@fastify/cors";
 
 dotenv.config();
 
 const server = fastify();
 
-server.get("/", function (request, reply) {
-  reply.send({ hello: "world" });
-});
-
-server.register(userRoutes);
-server.register(subscriptionRoutes);
-
 const start = async () => {
+  await server.register(cors, {
+    origin: ["http://localhost:5173"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  });
+
+  server.get("/", function (request, reply) {
+    reply.send({ hello: "world" });
+  });
+
+  server.register(userRoutes);
+  server.register(subscriptionRoutes);
+
   try {
     await connectDB();
     console.log("Database connected");
