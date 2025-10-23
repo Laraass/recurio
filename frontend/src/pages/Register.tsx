@@ -17,6 +17,21 @@ const Register: React.FC = () => {
     e.preventDefault();
     setError("");
 
+    if (!name || !email || !password || !confirmPassword) {
+      setError("Please fill in all fields.");
+      return;
+    }
+
+    if (!email.includes("@")) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters long.");
+      return;
+    }
+
     if (password !== confirmPassword) {
       setError("Passwords do not match. Try again.");
       return;
@@ -38,9 +53,9 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-3">
+    <div className="flex flex-col items-center gap-3 pt-8">
       <h1 className="text-2xl font-semibold">Register an account</h1>
-      <div className="flex flex-col px-6 py-9 border border-neutral-400 shadow-[0_2px_4px_0_rgba(0,0,0,0.25)] rounded-xl">
+      <div className="flex flex-col px-6 py-9 w-full max-w-90 border border-neutral-400 shadow-[0_2px_4px_0_rgba(0,0,0,0.25)] rounded-xl">
         <form onSubmit={handleRegister} className="flex flex-col gap-4">
           <InputField
             value={name}
@@ -72,6 +87,12 @@ const Register: React.FC = () => {
           {error && <p className="text-red-500">{error}</p>}
           <Button type="submit">Register account</Button>
         </form>
+      </div>
+      <div className="flex gap-1">
+        <p className="">Already have an account?</p>
+        <a href="/" className="underline hover:underline hover:font-semibold">
+          Sign in
+        </a>
       </div>
     </div>
   );
