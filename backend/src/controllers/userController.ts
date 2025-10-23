@@ -19,6 +19,11 @@ export const registerUser = async (
       return reply.status(400).send({ error: "Passwords do not match" });
     }
 
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return reply.status(400).send({ error: "Email already in use" });
+    }
+
     const hashPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({
