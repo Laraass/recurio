@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Button from "../components/Button";
 import InputField from "../components/InputField";
+import { useNavigate } from "react-router-dom";
+import api from "../api/axios";
 
 const Register: React.FC = () => {
   const [name, setName] = useState("");
@@ -9,11 +11,37 @@ const Register: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
+  const navigate = useNavigate();
+
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match. Try again.");
+      return;
+    }
+
+    try {
+      const response = await api.post("/users/register", {
+        name,
+        email,
+        password,
+        confirmPassword,
+      });
+
+      localStorage.setItem("token", response.data.token);
+      navigate("/");
+    } catch (error: any) {
+      setError(error.response?.data?.error || "Failed to register account");
+    }
+  };
+
   return (
     <div className="flex flex-col items-center gap-3">
       <h1 className="text-2xl font-semibold">Register an account</h1>
       <div className="flex flex-col px-6 py-9 border border-neutral-400 shadow-[0_2px_4px_0_rgba(0,0,0,0.25)] rounded-xl">
-        <form className="flex flex-col gap-4">
+        <form onSubmit={handleRegister} className="flex flex-col gap-4">
           <InputField
             value={name}
             onChange={(e) => setName(e.target.value)}
