@@ -90,7 +90,7 @@ const Register: React.FC = () => {
       </div>
       <div className="flex gap-1">
         <p className="">Already have an account?</p>
-        <a href="/" className="underline hover:underline hover:font-semibold">
+        <a href="/login" className="underline hover:underline hover:font-semibold">
           Sign in
         </a>
       </div>
