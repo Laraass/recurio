@@ -15,6 +15,16 @@ const Login: React.FC = () => {
     e.preventDefault();
     setError("");
 
+    if (!email || !password) {
+      setError("Please fill in all fields.");
+      return;
+    }
+
+    if (!email.includes("@")) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
     try {
       const response = await api.post("/users/login", {
         email,
