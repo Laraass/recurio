@@ -4,20 +4,18 @@ import InputField from "../components/InputField";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
 
-const Register: React.FC = () => {
-  const [name, setName] = useState("");
+const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
-  const handleRegister = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
-    if (!name || !email || !password || !confirmPassword) {
+    if (!email || !password) {
       setError("Please fill in all fields.");
       return;
     }
@@ -27,42 +25,28 @@ const Register: React.FC = () => {
       return;
     }
 
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters long.");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setError("Passwords do not match. Try again.");
-      return;
-    }
-
     try {
-      const response = await api.post("/users/register", {
-        name,
+      const response = await api.post("/users/login", {
         email,
         password,
-        confirmPassword,
       });
 
       localStorage.setItem("token", response.data.token);
       navigate("/");
     } catch (error: any) {
-      setError(error.response?.data?.error || "Failed to register account");
+      if (error.response?.status === 401) {
+        setError("Email or password is incorrect.");
+      } else {
+        setError("Something went wrong, please try again later.");
+      }
     }
   };
 
   return (
     <div className="flex flex-col items-center gap-3 pt-8">
-      <h1 className="text-2xl font-semibold">Register an account</h1>
+      <h1 className="text-2xl font-semibold">Sign in</h1>
       <div className="flex flex-col px-6 py-9 w-full max-w-90 border border-neutral-400 shadow-[0_2px_4px_0_rgba(0,0,0,0.25)] rounded-xl">
-        <form onSubmit={handleRegister} className="flex flex-col gap-4">
-          <InputField
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            title="Name"
-            placeholder="Enter your name"
-          ></InputField>
+        <form onSubmit={handleLogin} className="flex flex-col gap-4">
           <InputField
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -77,25 +61,21 @@ const Register: React.FC = () => {
             placeholder="Enter your password"
             type="password"
           ></InputField>
-          <InputField
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            title="Confirm password"
-            placeholder="Repeat password"
-            type="password"
-          ></InputField>
           {error && <p className="text-red-500">{error}</p>}
-          <Button type="submit">Register account</Button>
+          <Button type="submit">Sign in</Button>
         </form>
       </div>
       <div className="flex gap-1">
-        <p className="">Already have an account?</p>
-        <a href="/login" className="underline hover:underline hover:font-semibold">
-          Sign in
+        <p>Don't have an account?</p>
+        <a
+          href="/register"
+          className="underline hover:underline hover:font-semibold"
+        >
+          Register
         </a>
       </div>
     </div>
   );
 };
 
-export default Register;
+export default Login;
