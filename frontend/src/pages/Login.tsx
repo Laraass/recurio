@@ -34,7 +34,11 @@ const Login: React.FC = () => {
       localStorage.setItem("token", response.data.token);
       navigate("/");
     } catch (error: any) {
-      setError(error.response?.data?.error || "Failed to sign in");
+      if (error.response?.status === 401) {
+        setError("Email or password is incorrect.");
+      } else {
+        setError("Something went wrong, please try again later.");
+      }
     }
   };
 
