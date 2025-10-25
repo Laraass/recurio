@@ -15,7 +15,6 @@ const start = async () => {
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
-    preflight: true,
   });
 
   server.get("/", function (request, reply) {
