@@ -6,13 +6,17 @@ const Landing: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 p-6 w-screen h-screen bg-gradient-to-br from-[#fd851c] via-[#fda532] to-[#fdc04c] cursor-default">
+    <div
+      className="flex flex-col sm:flex-row items-center justify-center gap-4 
+    p-6 cursor-default w-screen h-screen bg-gradient-to-br from-[#fd851c] 
+    via-[#fda532] to-[#fdc04c]"
+    >
       <img
         src="/recurio_phone.svg"
         alt="mobile preview"
-        className="w-76 max-w-96"
+        className="w-76 max-w-96 animate-[float_4s_ease-in-out_infinite]"
       />
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 animate-[fadein_2s_ease-out]">
         <div className="flex flex-col gap-1">
           <Logo />
           <h1 className="text-3xl font-semibold">
