@@ -8,7 +8,7 @@ const Landing: React.FC = () => {
   return (
     <div
       className="flex flex-col sm:flex-row items-center justify-center gap-4 
-    p-6 cursor-default w-screen h-screen bg-gradient-to-br from-[#fd851c] 
+    p-6 cursor-default w-screen min-h-screen bg-gradient-to-br from-[#fd851c] 
     via-[#fda532] to-[#fdc04c]"
     >
       <img
