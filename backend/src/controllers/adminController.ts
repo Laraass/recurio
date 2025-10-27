@@ -1,5 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { User } from "../models/User";
+import { sendEmail as sendMail } from "../utils/email";
+import { Subscription } from "../models/Subscription";
 
 export const listAllUsers = async (request: FastifyRequest, reply: FastifyReply) => {
     try {
@@ -51,14 +53,21 @@ export const deleteUser = async (request: FastifyRequest, reply: FastifyReply) =
 
 export const sendEmail = async (request: FastifyRequest, reply: FastifyReply) => {
     try {
-        const { subject, message } = request.body as { 
-            subject: string; 
-            message: string
-        }
     
-        const subscribers = await User.find({ role: "subscriber" }).select("email")
+        const subscribers = await User.find({ role: "subscriber" }).select("name email _id")
 
-        // nodemailer
+        for (const user of subscribers) {
+            const subscriptions = await Subscription.find({ userId: user._id })
+            const totalSum = subscriptions.reduce((sum, sub) => sum + sub.price, 0)
+
+            const emailMessage = `Hello ${user.name}! Your total cost for your subscriptions this month is ${totalSum} kr.`
+
+            await sendMail({
+                to: user.email,
+                subject: "Your monthly subscription summary",
+                text: emailMessage
+            })
+        }
 
         reply.send({
             message: `Emails sent to ${subscribers.length} subscribers`
