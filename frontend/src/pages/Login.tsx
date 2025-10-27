@@ -32,7 +32,7 @@ const Login: React.FC = () => {
       });
 
       localStorage.setItem("token", response.data.token);
-      navigate("/");
+      navigate("/home");
     } catch (error: any) {
       if (error.response?.status === 401) {
         setError("Email or password is incorrect.");

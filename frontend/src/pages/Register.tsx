@@ -46,7 +46,7 @@ const Register: React.FC = () => {
       });
 
       localStorage.setItem("token", response.data.token);
-      navigate("/");
+      navigate("/home");
     } catch (error: any) {
       setError(error.response?.data?.error || "Failed to register account");
     }
