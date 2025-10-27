@@ -21,3 +21,17 @@ export const listAllUsers = async (request: FastifyRequest, reply: FastifyReply)
     }
 }
 
+export const editUserRole = async (request: FastifyRequest, reply: FastifyReply) => {
+    try {
+        const { id } = request.params as { id: string }
+        const { role } = request.body as { role: "default" | "subscriber" | "admin" }
+
+        const user = await User.findByIdAndUpdate(id, { role }, {new: true }).select("-password")
+        if (!user) return reply.status(404).send({ error: "User not found" })
+
+        reply.send({ message: "User role updated", user})
+    } catch (error) {
+        reply.status(500).send({ error: "Failed to update user role", details: error })
+    }
+}
+
