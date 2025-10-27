@@ -48,3 +48,23 @@ export const deleteUser = async (request: FastifyRequest, reply: FastifyReply) =
     }
 }
 
+
+export const sendEmail = async (request: FastifyRequest, reply: FastifyReply) => {
+    try {
+        const { subject, message } = request.body as { 
+            subject: string; 
+            message: string
+        }
+    
+        const subscribers = await User.find({ role: "subscriber" }).select("email")
+
+        // nodemailer
+
+        reply.send({
+            message: `Emails sent to ${subscribers.length} subscribers`
+        })
+    } catch (error) {
+        reply.status(500).send({ error: "Failed to send emails", details: error})
+    }
+}
+
