@@ -35,3 +35,16 @@ export const editUserRole = async (request: FastifyRequest, reply: FastifyReply)
     }
 }
 
+export const deleteUser = async (request: FastifyRequest, reply: FastifyReply) => {
+    try {
+        const { id } = request.params as { id: string }
+
+        const deletedUser = await User.findByIdAndDelete(id);
+        if (!deletedUser) return reply.status(404).send({ error: "User not found" })
+
+        reply.send({ message: "User deleted", userId: id })
+    } catch (error) {
+        reply.status(500).send({ error: "Failed to delete user", details: error })
+    }
+}
+

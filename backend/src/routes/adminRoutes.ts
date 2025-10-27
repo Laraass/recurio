@@ -1,7 +1,12 @@
 import { FastifyInstance } from "fastify";
-import { editUserRole, listAllUsers } from "../controllers/adminController";
+import {
+  deleteUser,
+  editUserRole,
+  listAllUsers,
+} from "../controllers/adminController";
 
 export default async function adminRoutes(server: FastifyInstance) {
-    server.get("/admin/users", listAllUsers)
-    server.put("/admin/users/:id/role", editUserRole);
+  server.get("/admin/users", listAllUsers);
+  server.put("/admin/users/:id/role", editUserRole);
+  server.delete("/admin/users/:id", deleteUser);
 }
