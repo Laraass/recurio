@@ -4,6 +4,7 @@ import { connectDB } from "./plugins/db";
 import userRoutes from "./routes/userRoutes";
 import subscriptionRoutes from "./routes/subscriptionRoutes";
 import cors from "@fastify/cors";
+import adminRoutes from "./routes/adminRoutes";
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ const start = async () => {
 
   server.register(userRoutes);
   server.register(subscriptionRoutes);
+  server.register(adminRoutes)
 
   try {
     await connectDB();
