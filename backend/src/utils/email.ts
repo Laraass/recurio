@@ -8,9 +8,7 @@ interface EmailContent {
 
 export const sendEmail = async ({ to, subject, text}: EmailContent) => {
     const transporter = nodemailer.createTransport({
-        host: "smtp.office365.com",
-        port: 587,
-        secure: false,
+        service: "gmail",
         auth: {
             user: process.env.ADMIN_USER,
             pass: process.env.ADMIN_PASS,
