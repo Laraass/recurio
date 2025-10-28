@@ -24,7 +24,7 @@ const start = async () => {
 
   server.register(userRoutes);
   server.register(subscriptionRoutes);
-  server.register(adminRoutes)
+  server.register(adminRoutes);
 
   try {
     await connectDB();

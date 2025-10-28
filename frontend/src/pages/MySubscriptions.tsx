@@ -42,7 +42,7 @@ const MySubscriptios: React.FC = () => {
     setSelectedSub(sub);
     setModalVariant("EditSub");
     setModalOpen(true);
-  }
+  };
 
   const deleteClick = (sub: Subscription) => {
     const userId = localStorage.getItem("userId");
@@ -122,14 +122,17 @@ const MySubscriptios: React.FC = () => {
             if (!userId) return;
 
             try {
-                await api.patch(`/users/${userId}/subscriptions/${selectedSub._id}`, {
-                    description: data.description,
-                    price: Number(data.price),
-                })
-                fetchUserSubscriptions();
-                setModalOpen(false);
+              await api.patch(
+                `/users/${userId}/subscriptions/${selectedSub._id}`,
+                {
+                  description: data.description,
+                  price: Number(data.price),
+                }
+              );
+              fetchUserSubscriptions();
+              setModalOpen(false);
             } catch (error) {
-                console.error("Failed to edit subscription", error)
+              console.error("Failed to edit subscription", error);
             }
           }}
         />
