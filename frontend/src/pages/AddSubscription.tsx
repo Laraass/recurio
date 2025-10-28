@@ -14,6 +14,10 @@ const AddSubscription: React.FC = () => {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedSub, setSelectedSub] = useState<Subscription | null>(null);
+  const [modalVariant, setModalVariant] = useState<"AddSub" | "Confirm">(
+    "AddSub"
+  );
+  const [confirmMessage, setConfirmMessage] = useState("");
 
   const fetchSubscriptions = async (search?: string) => {
     try {
@@ -52,7 +56,12 @@ const AddSubscription: React.FC = () => {
 
       fetchSubscriptions();
       setModalOpen(false);
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response?.status === 400) {
+        setModalOpen(true);
+        setModalVariant("Confirm");
+        setConfirmMessage("You already have this subscription.");
+      }
       console.error("Failed to add subscription", error);
     }
   };
@@ -87,12 +96,16 @@ const AddSubscription: React.FC = () => {
 
       {selectedSub && (
         <Modal
-          variant="AddSub"
+          variant={modalVariant}
           open={modalOpen}
-          onClose={() => setModalOpen(false)}
+          onClose={() => {
+            setModalOpen(false);
+            setModalVariant("AddSub");
+          }}
           company={selectedSub.company}
           image={selectedSub.image}
           onSubmit={addSubscription}
+          confirmMessage={confirmMessage}
         />
       )}
     </div>
