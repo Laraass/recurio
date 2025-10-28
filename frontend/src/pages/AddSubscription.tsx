@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Card from "../components/Card";
 import api from "../api/axios";
 import Searchbar from "../components/Searchbar";
+import Modal from "../components/Modal";
 
 interface Subscription {
   _id: string;
@@ -11,6 +12,8 @@ interface Subscription {
 
 const AddSubscription: React.FC = () => {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedSub, setSelectedSub] = useState<Subscription | null>(null);
 
   const fetchSubscriptions = async (search?: string) => {
     try {
@@ -19,6 +22,38 @@ const AddSubscription: React.FC = () => {
       setSubscriptions(res.data.subscriptions);
     } catch (error) {
       console.error("Failed to fetch all subscriptions", error);
+    }
+  };
+
+  const openModal = (subscription: Subscription) => {
+    setSelectedSub(subscription);
+    setModalOpen(true);
+  };
+
+  const addSubscription = async (data: {
+    description: string;
+    price: string;
+  }) => {
+    if (!selectedSub) return;
+
+    try {
+      const userId = localStorage.getItem("userId");
+
+      if (!userId) {
+        console.error("You must be logged in.");
+        return;
+      }
+
+      await api.post(`/users/${userId}/subscriptions`, {
+        company: selectedSub.company,
+        description: data.description,
+        price: data.price,
+      });
+
+      fetchSubscriptions();
+      setModalOpen(false);
+    } catch (error) {
+      console.error("Failed to add subscription", error);
     }
   };
 
@@ -43,11 +78,23 @@ const AddSubscription: React.FC = () => {
                 key={subscription._id}
                 company={subscription.company}
                 image={subscription.image}
+                onAdd={() => openModal(subscription)}
               />
             ))}
           </div>
         </div>
       </div>
+
+      {selectedSub && (
+        <Modal
+          variant="AddSub"
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
+          company={selectedSub.company}
+          image={selectedSub.image}
+          onSubmit={addSubscription}
+        />
+      )}
     </div>
   );
 };
