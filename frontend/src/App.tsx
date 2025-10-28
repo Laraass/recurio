@@ -4,6 +4,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Landing from "./pages/Landing";
 import Home from "./pages/Home";
+import AddSubscription from "./pages/AddSubscription";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/subscriptions" element={<AddSubscription />} />
         </Route>
       </Routes>
     </BrowserRouter>
