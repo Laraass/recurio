@@ -10,6 +10,7 @@ interface CardProps {
   image?: string;
   onAdd?: () => void;
   onDelete?: () => void;
+  onEdit?: () => void;
 }
 
 const Card: React.FC<CardProps> = ({
@@ -20,6 +21,7 @@ const Card: React.FC<CardProps> = ({
   image,
   onAdd,
   onDelete,
+  onEdit,
 }) => {
   return (
     <div className="flex items-center bg-neutral-50 border-b border-neutral-400 p-5 cursor-default">
@@ -53,7 +55,7 @@ const Card: React.FC<CardProps> = ({
             </div>
           </div>
           <div className="flex flex-col items-center gap-1">
-            <EditButton />
+            <EditButton onClick={onEdit}/>
             <DeleteButton onConfirm={onDelete}/>
           </div>
         </div>

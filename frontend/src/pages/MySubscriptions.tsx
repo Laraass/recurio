@@ -17,9 +17,7 @@ interface Subscription {
 const MySubscriptios: React.FC = () => {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalVariant, setModalVariant] = useState<"AddSub" | "Confirm">(
-    "AddSub"
-  );
+  const [modalVariant, setModalVariant] = useState<"AddSub" | "EditSub" | "Confirm">("AddSub");
   const [selectedSub, setSelectedSub] = useState<Subscription | null>(null);
   const [confirmAction, setConfirmAction] = useState<() => void>();
   const [confirmMessage, setConfirmMessage] = useState("");
@@ -39,6 +37,12 @@ const MySubscriptios: React.FC = () => {
       console.error("Failted to fetch user subscriptions", error);
     }
   };
+
+  const editClick = (sub: Subscription) => {
+    setSelectedSub(sub);
+    setModalVariant("EditSub");
+    setModalOpen(true);
+  }
 
   const deleteClick = (sub: Subscription) => {
     const userId = localStorage.getItem("userId");
@@ -83,6 +87,7 @@ const MySubscriptios: React.FC = () => {
                 description={sub.description}
                 price={sub.price}
                 image={sub.image}
+                onEdit={() => editClick(sub)}
                 onDelete={() => deleteClick(sub)}
               />
             ))}
@@ -105,7 +110,28 @@ const MySubscriptios: React.FC = () => {
           onClose={() => setModalOpen(false)}
           confirmAction={confirmAction}
           confirmMessage={confirmMessage}
-          onSubmit={() => {}}
+          company={selectedSub.company}
+          image={selectedSub.image}
+          defaultValue={{
+            description: selectedSub?.description,
+            price: selectedSub?.price,
+          }}
+          onSubmit={async (data) => {
+            if (!selectedSub) return;
+            const userId = localStorage.getItem("userId");
+            if (!userId) return;
+
+            try {
+                await api.patch(`/users/${userId}/subscriptions/${selectedSub._id}`, {
+                    description: data.description,
+                    price: Number(data.price),
+                })
+                fetchUserSubscriptions();
+                setModalOpen(false);
+            } catch (error) {
+                console.error("Failed to edit subscription", error)
+            }
+          }}
         />
       )}
     </div>
