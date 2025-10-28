@@ -3,6 +3,7 @@ import Card from "../components/Card";
 import Searchbar from "../components/Searchbar";
 import { useEffect, useState } from "react";
 import api from "../api/axios";
+import TotalSum from "../components/TotalSum";
 
 interface Subscription {
   _id: string;
@@ -40,12 +41,12 @@ const MySubscriptios: React.FC = () => {
       <div className="flex flex-col items-center sm:gap-3 sm:px-6 sm:py-9 w-full sm:border sm:border-neutral-400 sm:shadow-[0_2px_4px_0_rgba(0,0,0,0.25)] sm:rounded-xl">
         <div className="flex flex-col gap-3 w-full max-w-110">
           <h1 className="text-2xl font-semibold">My subscriptions</h1>
-
+          <TotalSum />
           <div>
             <Searchbar onSearch={(value) => fetchUserSubscriptions(value)} />
           </div>
 
-          <div className="flex flex-col overflow-auto sm:max-h-[35rem] scrollbar-none rounded-xl border border-neutral-400">
+          <div className="flex flex-col overflow-auto sm:max-h-[24rem] scrollbar-none rounded-xl border border-neutral-400">
             {subscriptions.map((sub) => (
               <Card
                 key={sub._id}
