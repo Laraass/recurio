@@ -1,17 +1,35 @@
 import { useEffect, useState } from "react";
+import api from "../api/axios";
 
-interface TotalSumProps {
-  total?: number;
+interface Stats {
+  count: number;
+  totalSum: number;
 }
 
-const TotalSum: React.FC<TotalSumProps> = () => {
-
+const TotalSum: React.FC = () => {
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
+    const fetchSum = async () => {
+      const userId = localStorage.getItem("userId");
+      if (!userId) return;
 
+      try {
+        const res = await api.get(`/users/${userId}/subscriptions/statistics`);
+        const stats: Record<string, Stats> = res.data.statistics;
 
-    
+        const totalSum = Object.values(stats).reduce(
+          (acc: number, curr: Stats) => acc + curr.totalSum,
+          0
+        );
+
+        setTotal(totalSum);
+      } catch (error) {
+        console.error("Failed to fetch total cost,", error);
+      }
+    };
+
+    fetchSum();
   }, []);
 
   return (
