@@ -46,7 +46,9 @@ const Register: React.FC = () => {
       });
 
       localStorage.setItem("token", response.data.token);
-      navigate("/");
+      localStorage.setItem("userId", response.data.user._id);
+      localStorage.setItem("userName", response.data.user.name);
+      navigate("/home");
     } catch (error: any) {
       setError(error.response?.data?.error || "Failed to register account");
     }
@@ -90,7 +92,10 @@ const Register: React.FC = () => {
       </div>
       <div className="flex gap-1">
         <p className="">Already have an account?</p>
-        <a href="/login" className="underline hover:underline hover:font-semibold">
+        <a
+          href="/login"
+          className="underline hover:underline hover:font-semibold"
+        >
           Sign in
         </a>
       </div>

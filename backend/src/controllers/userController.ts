@@ -32,7 +32,23 @@ export const registerUser = async (
       password: hashPassword,
     });
 
-    reply.status(201).send({ message: "User registered!", userId: user._id });
+    const token = jwt.sign(
+      { userId: user._id, role: user.role },
+      process.env.JWT_SECRET || "secretkey",
+      { expiresIn: "7d" }
+    );
+
+    reply.status(201).send({
+      message: "User registered!",
+      token,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        image: user.image,
+      },
+    });
   } catch (error) {
     reply
       .status(500)
