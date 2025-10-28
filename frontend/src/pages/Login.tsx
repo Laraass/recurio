@@ -32,6 +32,8 @@ const Login: React.FC = () => {
       });
 
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("userId", response.data.user._id);
+      localStorage.setItem("userName", response.data.user.name);
       navigate("/home");
     } catch (error: any) {
       if (error.response?.status === 401) {
