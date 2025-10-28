@@ -6,7 +6,15 @@ export const listAllSubscriptions = async (
   reply: FastifyReply
 ) => {
   try {
-    const allSubscriptions = await Subscription.find({ userId: { $exists: false } });
+    const { search } = request.query as { search?: string };
+
+    const query: Record<string, any> = { userId: { $exists: false } };
+
+    if (search) {
+      query.company = { $regex: search, $options: "i" };
+    }
+
+    const allSubscriptions = await Subscription.find(query);
 
     reply.send({ subscriptions: allSubscriptions });
   } catch (error) {
