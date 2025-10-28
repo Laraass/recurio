@@ -4,6 +4,7 @@ import Searchbar from "../components/Searchbar";
 import { useEffect, useState } from "react";
 import api from "../api/axios";
 import TotalSum from "../components/TotalSum";
+import Modal from "../components/Modal";
 
 interface Subscription {
   _id: string;
@@ -15,6 +16,13 @@ interface Subscription {
 
 const MySubscriptios: React.FC = () => {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalVariant, setModalVariant] = useState<"AddSub" | "Confirm">(
+    "AddSub"
+  );
+  const [selectedSub, setSelectedSub] = useState<Subscription | null>(null);
+  const [confirmAction, setConfirmAction] = useState<() => void>();
+  const [confirmMessage, setConfirmMessage] = useState("");
 
   const fetchUserSubscriptions = async (search?: string) => {
     const userId = localStorage.getItem("userId");
@@ -30,6 +38,26 @@ const MySubscriptios: React.FC = () => {
     } catch (error) {
       console.error("Failted to fetch user subscriptions", error);
     }
+  };
+
+  const deleteClick = (sub: Subscription) => {
+    const userId = localStorage.getItem("userId");
+    if (!userId) return;
+
+    setSelectedSub(sub);
+    setConfirmMessage(`Are you sure you want to delete ${sub.company}?`);
+    setModalVariant("Confirm");
+    setModalOpen(true);
+
+    setConfirmAction(() => async () => {
+      try {
+        await api.delete(`/users/${userId}/subscriptions/${sub._id}`);
+        fetchUserSubscriptions();
+        setModalOpen(false);
+      } catch (error) {
+        console.error("Failed to delete subscription", error);
+      }
+    });
   };
 
   useEffect(() => {
@@ -55,6 +83,7 @@ const MySubscriptios: React.FC = () => {
                 description={sub.description}
                 price={sub.price}
                 image={sub.image}
+                onDelete={() => deleteClick(sub)}
               />
             ))}
           </div>
@@ -68,6 +97,17 @@ const MySubscriptios: React.FC = () => {
           </a>
         </div>
       </div>
+
+      {selectedSub && (
+        <Modal
+          variant={modalVariant}
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
+          confirmAction={confirmAction}
+          confirmMessage={confirmMessage}
+          onSubmit={() => {}}
+        />
+      )}
     </div>
   );
 };
