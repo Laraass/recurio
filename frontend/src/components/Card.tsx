@@ -9,6 +9,8 @@ interface CardProps {
   price?: string;
   image?: string;
   onAdd?: () => void;
+  onDelete?: () => void;
+  onEdit?: () => void;
 }
 
 const Card: React.FC<CardProps> = ({
@@ -18,6 +20,8 @@ const Card: React.FC<CardProps> = ({
   price,
   image,
   onAdd,
+  onDelete,
+  onEdit,
 }) => {
   return (
     <div className="flex items-center bg-neutral-50 border-b border-neutral-400 p-5 cursor-default">
@@ -44,15 +48,15 @@ const Card: React.FC<CardProps> = ({
             )}
             <div className="flex flex-col">
               {company && <p className="text-lg font-medium">{company}</p>}
-              {price && <p className="text-xs">{price}</p>}
+              {price && <p className="text-xs">{price} kr</p>}
               {description && (
                 <p className="text-xs line-clamp-1 pr-5">{description}</p>
               )}
             </div>
           </div>
           <div className="flex flex-col items-center gap-1">
-            <EditButton />
-            <DeleteButton />
+            <EditButton onClick={onEdit}/>
+            <DeleteButton onConfirm={onDelete}/>
           </div>
         </div>
       )}

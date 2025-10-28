@@ -13,7 +13,7 @@ const server = fastify();
 const start = async () => {
   await server.register(cors, {
     origin: ["http://localhost:5173", "https://recurio-app.vercel.app"],
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   });
@@ -24,7 +24,7 @@ const start = async () => {
 
   server.register(userRoutes);
   server.register(subscriptionRoutes);
-  server.register(adminRoutes)
+  server.register(adminRoutes);
 
   try {
     await connectDB();
