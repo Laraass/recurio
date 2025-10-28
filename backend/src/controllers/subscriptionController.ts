@@ -30,8 +30,15 @@ export const listUserSubscriptions = async (
 ) => {
   try {
     const { userId } = request.params as { userId: string };
+    const { search } = request.query as { search?: string };
 
-    const subscriptions = await Subscription.find({ userId });
+    const query: Record<string, any> = { userId };
+
+    if (search) {
+      query.company = { $regex: search, $options: "i" };
+    }
+
+    const subscriptions = await Subscription.find(query);
     reply.send({ subscriptions });
   } catch (error) {
     reply

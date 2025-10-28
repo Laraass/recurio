@@ -15,12 +15,16 @@ interface Subscription {
 const MySubscriptios: React.FC = () => {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
 
-  const fetchUserSubscriptions = async () => {
+  const fetchUserSubscriptions = async (search?: string) => {
     const userId = localStorage.getItem("userId");
     if (!userId) return;
 
     try {
-      const res = await api.get(`/users/${userId}/subscriptions`);
+      const url = search
+        ? `/users/${userId}/subscriptions?search=${search}`
+        : `/users/${userId}/subscriptions`;
+
+      const res = await api.get(url);
       setSubscriptions(res.data.subscriptions);
     } catch (error) {
       console.error("Failted to fetch user subscriptions", error);
@@ -29,7 +33,7 @@ const MySubscriptios: React.FC = () => {
 
   useEffect(() => {
     fetchUserSubscriptions();
-  });
+  }, []);
 
   return (
     <div className="flex flex-col items-center pt-8 max-w-6xl mx-auto">
@@ -38,7 +42,7 @@ const MySubscriptios: React.FC = () => {
           <h1 className="text-2xl font-semibold">My subscriptions</h1>
 
           <div>
-            <Searchbar />
+            <Searchbar onSearch={(value) => fetchUserSubscriptions(value)} />
           </div>
 
           <div className="flex flex-col overflow-auto sm:max-h-[35rem] scrollbar-none rounded-xl border border-neutral-400">
