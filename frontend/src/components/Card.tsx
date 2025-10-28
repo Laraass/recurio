@@ -44,7 +44,7 @@ const Card: React.FC<CardProps> = ({
             )}
             <div className="flex flex-col">
               {company && <p className="text-lg font-medium">{company}</p>}
-              {price && <p className="text-xs">{price}</p>}
+              {price && <p className="text-xs">{price} kr</p>}
               {description && (
                 <p className="text-xs line-clamp-1 pr-5">{description}</p>
               )}
