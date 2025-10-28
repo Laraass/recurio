@@ -60,7 +60,7 @@ const Home: React.FC = () => {
           </div>
 
           <div className="flex justify-center">
-            <a href="/home" title="Add subscription">
+            <a href="/subscriptions" title="Add subscription">
               <Icon
                 icon="icon-park-solid:add"
                 className="text-primary size-10 hover:text-accent active:text-accent"

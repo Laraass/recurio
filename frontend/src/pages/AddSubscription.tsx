@@ -80,7 +80,7 @@ const AddSubscription: React.FC = () => {
             <Searchbar onSearch={(value) => fetchSubscriptions(value)} />
           </div>
 
-          <div className="flex flex-col overflow-auto sm:max-h-[40rem] scrollbar-none rounded-xl border border-neutral-400">
+          <div className="flex flex-col overflow-auto sm:max-h-[35rem] scrollbar-none rounded-xl border border-neutral-400">
             {subscriptions.map((subscription) => (
               <Card
                 variant="Company"
