@@ -7,6 +7,7 @@ interface ModalProps {
   open: boolean;
   onClose: () => void;
   onSubmit: (data: { description: string; price: string }) => void;
+  confirmAction?: () => void;
 
   company?: string;
   image?: string;
@@ -24,6 +25,7 @@ const Modal: React.FC<ModalProps> = ({
   open,
   onClose,
   onSubmit,
+  confirmAction,
   company,
   image,
   defaultValue,
@@ -144,8 +146,11 @@ const Modal: React.FC<ModalProps> = ({
               <Button
                 type="button"
                 onClick={() => {
-                  onSubmit({ description: "", price: "" });
-                  onClose();
+                  if (confirmAction) {
+                    confirmAction();
+                  } else {
+                    onClose();
+                  }
                 }}
               >
                 Confirm

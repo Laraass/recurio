@@ -1,13 +1,22 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { Subscription } from "../models/Subscription";
-import { subscriptions } from "../data/subscriptions";
 
 export const listAllSubscriptions = async (
   request: FastifyRequest,
   reply: FastifyReply
 ) => {
   try {
-    reply.send({ subscriptions });
+    const { search } = request.query as { search?: string };
+
+    const query: Record<string, any> = { userId: { $exists: false } };
+
+    if (search) {
+      query.company = { $regex: search, $options: "i" };
+    }
+
+    const allSubscriptions = await Subscription.find(query);
+
+    reply.send({ subscriptions: allSubscriptions });
   } catch (error) {
     reply
       .status(500)
@@ -47,7 +56,7 @@ export const addSubscription = async (
       return reply.status(400).send({ error: "Price is required" });
     }
 
-    const existingSub = subscriptions.find((sub) => sub.company === company);
+    const existingSub = await Subscription.findOne({ company });
     if (!existingSub) {
       return reply.status(400).send({ error: "Invalid subscription" });
     }
