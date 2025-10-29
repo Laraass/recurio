@@ -3,6 +3,7 @@ import Button from "../components/Button";
 import InputField from "../components/InputField";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
+import Header from "../components/Header";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -45,9 +46,10 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-3 pt-8">
+    <div className="flex flex-col items-center justify-center gap-3 min-h-screen cursor-default w-full sm:p-16 px-4 bg-gradient-to-br from-[#fd851c] via-[#fda532] to-[#fdc04c]">
+      <Header />
       <h1 className="text-2xl font-semibold">Sign in</h1>
-      <div className="flex flex-col px-6 py-9 w-full max-w-90 border border-neutral-400 shadow-[0_2px_4px_0_rgba(0,0,0,0.25)] rounded-xl">
+      <div className="flex flex-col px-6 py-9 w-full max-w-90 bg-neutral-50 border border-neutral-400 shadow-[0_2px_4px_0_rgba(0,0,0,0.25)] rounded-xl">
         <form onSubmit={handleLogin} className="flex flex-col gap-4">
           <InputField
             value={email}
