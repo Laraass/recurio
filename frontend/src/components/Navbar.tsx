@@ -1,13 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NavbarButton from "./NavbarButton";
 import Logo from "./Logo";
 
-interface NavbarProps {
-  isAdmin?: boolean;
-}
-
-const Navbar: React.FC<NavbarProps> = ({ isAdmin = true }) => {
+const Navbar: React.FC = () => {
   const [activePage, setActivePage] = useState("home");
+  const [admin, setAdmin] = useState(false)
+
+  useEffect(() => {
+    const existingUser = localStorage.getItem("user");
+    if (existingUser) {
+      const user = JSON.parse(existingUser)
+      setAdmin(user.role === "admin" )
+    }
+  }, [])
 
   return (
     <nav className="fixed bottom-0 sm:top-0 sm:h-20 flex items-center justify-between w-full sm:px-9 md:py-6 backdrop-blur-md bg-neutral-50/1">
@@ -43,7 +48,7 @@ const Navbar: React.FC<NavbarProps> = ({ isAdmin = true }) => {
           onClick={() => setActivePage("profile")}
         ></NavbarButton>
 
-        {isAdmin && (
+        {admin && (
           <NavbarButton
             icon={"dashicons:shield"}
             title={"Admin dashboard"}
