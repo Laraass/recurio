@@ -13,15 +13,14 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Landing />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
 
         <Route element={<Layout />}>
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
           <Route path="/home" element={<Home />} />
           <Route path="/subscriptions" element={<AddSubscription />} />
           <Route path="/my-subscriptions" element={<MySubscriptions />} />
-          <Route path="/profile" element={<Profile/>} />
-
+          <Route path="/profile" element={<Profile />} />
         </Route>
       </Routes>
     </BrowserRouter>
