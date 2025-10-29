@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import NavbarButton from "./NavbarButton";
 import Logo from "./Logo";
 import { useNavigate } from "react-router-dom";
+import api from "../api/axios";
 
 const Navbar: React.FC = () => {
   const [activePage, setActivePage] = useState("home");
@@ -9,11 +10,16 @@ const Navbar: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const existingUser = localStorage.getItem("user");
-    if (existingUser) {
-      const user = JSON.parse(existingUser);
-      setAdmin(user.role === "admin");
-    }
+    const fetchUser = async () => {
+      try {
+        const res = await api.get("/users/profile");
+        setAdmin(res.data.user.role === "admin");
+      } catch (err) {
+        setAdmin(false);
+      }
+    };
+
+    fetchUser();
   }, []);
 
   const navigation = (page: string, path: string) => {
