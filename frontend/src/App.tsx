@@ -6,6 +6,7 @@ import Landing from "./pages/Landing";
 import Home from "./pages/Home";
 import AddSubscription from "./pages/AddSubscription";
 import MySubscriptions from "./pages/MySubscriptions";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -19,6 +20,8 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/subscriptions" element={<AddSubscription />} />
           <Route path="/my-subscriptions" element={<MySubscriptions />} />
+          <Route path="/profile" element={<Profile/>} />
+
         </Route>
       </Routes>
     </BrowserRouter>
