@@ -38,6 +38,16 @@ const Profile: React.FC = () => {
     }
   };
 
+  const logout = async () => {
+    try {
+      await api.post("/users/logout");
+      localStorage.removeItem("token");
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Failed to log out", error);
+    }
+  };
+
   useEffect(() => {
     fetchProfile();
   }, []);
@@ -62,6 +72,10 @@ const Profile: React.FC = () => {
               {user.role === "subscriber"
                 ? "Unsubscribe from e-mails"
                 : "Subscribe to e-mails"}
+            </Button>
+
+            <Button variant="dark" onClick={logout}>
+              Log out
             </Button>
           </>
         )}
