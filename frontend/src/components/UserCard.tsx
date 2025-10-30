@@ -12,7 +12,7 @@ const UserCard: React.FC<UserCardProps> = ({ name, email, role, image }) => {
   return (
     <div className="flex items-center bg-neutral-50 border-b border-neutral-400 p-5 cursor-default justify-between">
       <div className="flex items-center gap-4">
-        <img src={image} alt={name} className="size-12" />
+        <img src={image} alt={name} className="size-16" />
 
         <div className="flex flex-col">
           <p className="text-lg font-medium">{name}</p>
