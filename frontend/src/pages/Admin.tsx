@@ -3,6 +3,7 @@ import api from "../api/axios";
 import UserCard from "../components/UserCard";
 import Modal from "../components/Modal";
 import Searchbar from "../components/Searchbar";
+import EditModal from "../components/EditModal";
 
 interface User {
   _id: string;
@@ -20,6 +21,7 @@ const Admin: React.FC = () => {
   const [deleteUser, setDeleteUser] = useState<User | null>(null);
   const [confirmAction, setConfirmAction] = useState<() => void>();
   const [confirmMessage, setConfirmMessage] = useState("");
+  const [editUser, setEditUser] = useState<User | null>(null);
 
   const fetchUsers = async (search?: string) => {
     try {
@@ -37,6 +39,11 @@ const Admin: React.FC = () => {
   useEffect(() => {
     fetchUsers();
   }, []);
+
+  const editClick = (user: User) => {
+    setEditUser(user);
+    setModalOpen(true);
+  };
 
   const deleteClick = (user: User) => {
     setDeleteUser(user);
@@ -78,6 +85,7 @@ const Admin: React.FC = () => {
                 image={user.image}
                 role={user.role}
                 onDelete={() => deleteClick(user)}
+                onEdit={() => editClick(user)}
               />
             ))}
           </div>
@@ -90,6 +98,25 @@ const Admin: React.FC = () => {
           onClose={() => setModalOpen(false)}
           confirmAction={confirmAction}
           confirmMessage={confirmMessage}
+        />
+      )}
+
+      {editUser && (
+        <EditModal
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
+          user={editUser}
+          onSave={async (newRole) => {
+            try {
+              await api.put(`/admin/users/${editUser._id}/role`, {
+                role: newRole,
+              });
+              fetchUsers();
+              setModalOpen(false);
+            } catch (error) {
+              console.error("Failed to update user role", error);
+            }
+          }}
         />
       )}
     </div>

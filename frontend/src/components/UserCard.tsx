@@ -7,6 +7,7 @@ interface UserCardProps {
   role: "default" | "subscriber" | "admin";
   image: string;
   onDelete: () => void;
+  onEdit: () => void;
 }
 
 const UserCard: React.FC<UserCardProps> = ({
@@ -15,6 +16,7 @@ const UserCard: React.FC<UserCardProps> = ({
   role,
   image,
   onDelete,
+  onEdit
 }) => {
   return (
     <div className="flex items-center bg-neutral-50 border-b border-neutral-400 p-5 cursor-default justify-between">
@@ -29,7 +31,7 @@ const UserCard: React.FC<UserCardProps> = ({
       </div>
 
       <div className="flex flex-col items-center gap-1">
-        <EditButton />
+        <EditButton onClick={onEdit}/>
         <DeleteButton onConfirm={onDelete} />
       </div>
     </div>
