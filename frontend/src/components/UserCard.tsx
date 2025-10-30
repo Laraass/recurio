@@ -6,9 +6,16 @@ interface UserCardProps {
   email: string;
   role: "default" | "subscriber" | "admin";
   image: string;
+  onDelete: () => void;
 }
 
-const UserCard: React.FC<UserCardProps> = ({ name, email, role, image }) => {
+const UserCard: React.FC<UserCardProps> = ({
+  name,
+  email,
+  role,
+  image,
+  onDelete,
+}) => {
   return (
     <div className="flex items-center bg-neutral-50 border-b border-neutral-400 p-5 cursor-default justify-between">
       <div className="flex items-center gap-4">
@@ -23,7 +30,7 @@ const UserCard: React.FC<UserCardProps> = ({ name, email, role, image }) => {
 
       <div className="flex flex-col items-center gap-1">
         <EditButton />
-        <DeleteButton />
+        <DeleteButton onConfirm={onDelete} />
       </div>
     </div>
   );

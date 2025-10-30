@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
 import UserCard from "../components/UserCard";
+import Modal from "../components/Modal";
 
 interface User {
   _id: string;
@@ -14,6 +15,10 @@ const Admin: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [deleteUser, setDeleteUser] = useState<User | null>(null);
+  const [confirmAction, setConfirmAction] = useState<() => void>();
+  const [confirmMessage, setConfirmMessage] = useState("");
 
   const fetchUsers = async () => {
     try {
@@ -31,6 +36,23 @@ const Admin: React.FC = () => {
     fetchUsers();
   }, []);
 
+  const deleteClick = (user: User) => {
+    setDeleteUser(user);
+    setConfirmMessage(`Are you sure you want to delete ${user.name}?`);
+    setModalOpen(true);
+
+    setConfirmAction(() => async () => {
+      if (!user._id) return;
+      try {
+        await api.delete(`/admin/users/${user._id}`);
+        fetchUsers();
+        setModalOpen(false);
+      } catch (error) {
+        console.error("Failed to delete user", error);
+      }
+    });
+  };
+
   if (loading) return <p className="text-base pt-8">Loading users...</p>;
   if (error) return <p className="text-base text-red-600">{error}</p>;
 
@@ -46,10 +68,20 @@ const Admin: React.FC = () => {
               email={user.email}
               image={user.image}
               role={user.role}
+              onDelete={() => deleteClick(user)}
             />
           ))}
         </div>
       </div>
+      {deleteUser && (
+        <Modal
+          variant="Confirm"
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
+          confirmAction={confirmAction}
+          confirmMessage={confirmMessage}
+        />
+      )}
     </div>
   );
 };
