@@ -13,6 +13,16 @@ const Statistics: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const totalSubscriptions = Object.values(stats).reduce(
+    (acc, curr) => acc + curr.count,
+    0
+  );
+
+  const totalCost = Object.values(stats).reduce(
+    (acc, curr) => acc + curr.totalSum,
+    0
+  );
+
   useEffect(() => {
     const fetchStats = async () => {
       try {
@@ -47,8 +57,12 @@ const Statistics: React.FC = () => {
             <h1 className="text-2xl font-semibold">Statistics</h1>
 
             <div className="flex flex-col gap-1">
-              <p>You have ... active subscriptions</p>
-              <p>Total ... kr/month</p>
+              <p>
+                You have <b>{totalSubscriptions}</b> active subscriptions.
+              </p>
+              <p>
+                The total is <b>{totalCost}</b> kr/month.
+              </p>
             </div>
 
             <div className="flex flex-col md:flex-row gap-4">
