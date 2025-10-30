@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
 import Category from "../components/Category";
+import PieChartWheel from "../components/PieChartWheel";
 
 interface SubscriptionStats {
   count: number;
@@ -39,27 +40,51 @@ const Statistics: React.FC = () => {
   if (error) return <p className="text-base text-red-600">{error}</p>;
 
   return (
-    <div className="flex flex-col items-center pt-8 max-w-6xl mx-auto">
-      <div className="flex flex-col items-center sm:gap-3 sm:px-6 sm:py-9 w-full sm:border sm:border-neutral-400 sm:shadow-[0_2px_4px_0_rgba(0,0,0,0.25)] sm:rounded-xl">
-        <div className="flex flex-col gap-3 w-full max-w-110">
-          <h1 className="text-2xl font-semibold">Statistics</h1>
+    <div className="flex flex-col pt-8 max-w-6xl mx-auto">
+      <div className="flex flex-col sm:gap-3 sm:px-6 sm:py-9 w-full sm:border sm:border-neutral-400 sm:shadow-[0_2px_4px_0_rgba(0,0,0,0.25)] sm:rounded-xl">
+        <div className="flex flex-col items-center">
+          <div className="flex flex-col gap-3">
+            <h1 className="text-2xl font-semibold">Statistics</h1>
 
-          <div className="flex flex-col gap-1">
-            <p>You have ... active subscriptions</p>
-            <p>Total ... kr/month</p>
-          </div>
+            <div className="flex flex-col gap-1">
+              <p>You have ... active subscriptions</p>
+              <p>Total ... kr/month</p>
+            </div>
 
-          <div className="flex flex-col gap-6 px-6 py-9 border border-neutral-400 rounded-xl">
-            <p className="font-bold">Number of subscriptions per category</p>
-            {Object.entries(stats).map(([category, data]) => (
-              <div
-                key={category}
-                className="flex items-center justify-between border-b border-neutral-200 pb-3"
-              >
-                <Category category={category as any} />
-                <span className="text-base font-medium">{data.count}</span>
+            <div className="flex flex-col md:flex-row gap-4">
+              <div className="flex flex-col gap-6 px-6 py-9 border border-neutral-400 rounded-xl">
+                <p className="font-bold">
+                  Number of subscriptions per category
+                </p>
+                {Object.entries(stats).map(([category, data]) => (
+                  <div
+                    key={category}
+                    className="flex items-center justify-between border-b border-neutral-200 pb-3"
+                  >
+                    <Category category={category as any} />
+                    <span className="text-base font-medium">{data.count}</span>
+                  </div>
+                ))}
               </div>
-            ))}
+
+              <div className="flex flex-col gap-6 px-6 py-9 min-w-88 border border-neutral-400 rounded-xl overflow-auto sm:max-h-[35rem] scrollbar-none">
+                <p className="font-bold">Cost distribution per category</p>
+
+                <PieChartWheel stats={stats} />
+
+                {Object.entries(stats).map(([category, data]) => (
+                  <div
+                    key={category}
+                    className="flex items-center justify-between border-b border-neutral-200 pb-3"
+                  >
+                    <Category category={category as any} />
+                    <span className="text-base font-medium">
+                      {data.totalSum} kr
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>
