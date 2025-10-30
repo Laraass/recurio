@@ -4,6 +4,7 @@ import UserCard from "../components/UserCard";
 import Modal from "../components/Modal";
 import Searchbar from "../components/Searchbar";
 import EditModal from "../components/EditModal";
+import Button from "../components/Button";
 
 interface User {
   _id: string;
@@ -22,6 +23,8 @@ const Admin: React.FC = () => {
   const [confirmAction, setConfirmAction] = useState<() => void>();
   const [confirmMessage, setConfirmMessage] = useState("");
   const [editUser, setEditUser] = useState<User | null>(null);
+  const [sendEmail, setSendEmail] = useState(false);
+  const [emailMessage, setEmailMessage] = useState("");
 
   const fetchUsers = async (search?: string) => {
     try {
@@ -62,6 +65,20 @@ const Admin: React.FC = () => {
     });
   };
 
+  const sendEmails = async () => {
+    setSendEmail(true);
+    setEmailMessage("");
+    try {
+      const res = await api.post("/admin/email");
+      setEmailMessage(res.data.message);
+    } catch (error) {
+      console.error("Failed to send emails", error);
+      setEmailMessage("Failed to send emails");
+    } finally {
+      setSendEmail(false);
+    }
+  };
+
   if (loading) return <p className="text-base pt-8">Loading users...</p>;
   if (error) return <p className="text-base text-red-600">{error}</p>;
 
@@ -89,6 +106,13 @@ const Admin: React.FC = () => {
               />
             ))}
           </div>
+
+          <Button onClick={sendEmails}>
+            {sendEmail ? "Sending..." : "Send out e-mails"}
+          </Button>
+          {emailMessage && (
+            <p className="text-sm text-center">{emailMessage}</p>
+          )}
         </div>
       </div>
       {deleteUser && (
