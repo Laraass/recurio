@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import api from "../api/axios";
 import UserCard from "../components/UserCard";
 import Modal from "../components/Modal";
+import Searchbar from "../components/Searchbar";
 
 interface User {
   _id: string;
@@ -20,9 +21,10 @@ const Admin: React.FC = () => {
   const [confirmAction, setConfirmAction] = useState<() => void>();
   const [confirmMessage, setConfirmMessage] = useState("");
 
-  const fetchUsers = async () => {
+  const fetchUsers = async (search?: string) => {
     try {
-      const res = await api.get("/admin/users");
+      const url = search ? `/admin/users?search=${search}` : "/admin/users";
+      const res = await api.get(url);
       setUsers(res.data.users);
     } catch (error) {
       console.error(error);
@@ -59,18 +61,26 @@ const Admin: React.FC = () => {
   return (
     <div className="flex flex-col items-center pt-8 max-w-6xl mx-auto">
       <div className="flex flex-col items-center sm:gap-3 sm:px-6 sm:py-9 w-full sm:border sm:border-neutral-400 sm:shadow-[0_2px_4px_0_rgba(0,0,0,0.25)] sm:rounded-xl">
-        <h1 className="text-2xl"></h1>
-        <div className="flex flex-col overflow-auto sm:max-h-[34rem] w-full sm:w-110 scrollbar-none rounded-xl border border-neutral-400">
-          {users.map((user) => (
-            <UserCard
-              key={user._id}
-              name={user.name}
-              email={user.email}
-              image={user.image}
-              role={user.role}
-              onDelete={() => deleteClick(user)}
-            />
-          ))}
+        <div className="flex flex-col gap-3">
+          <h1 className="text-2xl font-bold">Admin dashboard</h1>
+
+          <Searchbar
+            onSearch={(value) => fetchUsers(value)}
+            placeholder="Search users..."
+          />
+
+          <div className="flex flex-col overflow-auto sm:max-h-[34rem] w-full sm:w-110 scrollbar-none rounded-xl border border-neutral-400">
+            {users.map((user) => (
+              <UserCard
+                key={user._id}
+                name={user.name}
+                email={user.email}
+                image={user.image}
+                role={user.role}
+                onDelete={() => deleteClick(user)}
+              />
+            ))}
+          </div>
         </div>
       </div>
       {deleteUser && (
