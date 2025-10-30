@@ -8,6 +8,7 @@ import AddSubscription from "./pages/AddSubscription";
 import MySubscriptions from "./pages/MySubscriptions";
 import Profile from "./pages/Profile";
 import Statistics from "./pages/Statistics";
+import Admin from "./pages/Admin";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/my-subscriptions" element={<MySubscriptions />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/statistics" element={<Statistics />} />
+          <Route path="/admin" element={<Admin />} />
         </Route>
       </Routes>
     </BrowserRouter>
