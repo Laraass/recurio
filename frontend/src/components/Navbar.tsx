@@ -28,7 +28,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="fixed bottom-0 sm:top-0 sm:h-20 flex items-center justify-between w-full sm:px-9 md:py-6 backdrop-blur-md bg-neutral-50/1">
+    <nav className="fixed bottom-0 sm:top-0 sm:h-20 flex items-center justify-between w-full sm:px-9 md:py-6 bg-neutral-50 z-50">
       <a href="/home" className="hidden sm:block">
         <Logo />
       </a>
