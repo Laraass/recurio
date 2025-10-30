@@ -4,7 +4,7 @@ import Header from "./Header";
 
 const Layout = () => {
   return (
-    <div className="flex flex-col items-center min-h-screen cursor-default">
+    <div className="flex flex-col items-center min-h-screen cursor-default bg-neutral-50">
       <Navbar />
       <Header />
 

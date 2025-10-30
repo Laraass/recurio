@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import AddSubscription from "./pages/AddSubscription";
 import MySubscriptions from "./pages/MySubscriptions";
 import Profile from "./pages/Profile";
+import Statistics from "./pages/Statistics";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/subscriptions" element={<AddSubscription />} />
           <Route path="/my-subscriptions" element={<MySubscriptions />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/statistics" element={<Statistics />} />
         </Route>
       </Routes>
     </BrowserRouter>
