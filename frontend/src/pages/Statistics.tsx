@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import api from "../api/axios";
 import Category from "../components/Category";
 import PieChartWheel from "../components/PieChartWheel";
+import Pagination from "../components/Pagination";
 
 interface SubscriptionStats {
   count: number;
@@ -54,7 +55,10 @@ const Statistics: React.FC = () => {
       <div className="flex flex-col sm:gap-3 sm:px-6 sm:py-9 w-full sm:border sm:border-neutral-400 sm:shadow-[0_2px_4px_0_rgba(0,0,0,0.25)] sm:rounded-xl">
         <div className="flex flex-col items-center">
           <div className="flex flex-col gap-3">
-            <h1 className="text-2xl font-semibold">Statistics</h1>
+            <div className="flex w-full justify-between">
+              <h1 className="text-2xl font-semibold">Statistics</h1>
+              <Pagination />
+            </div>
 
             <div className="flex flex-col gap-1">
               <p>
