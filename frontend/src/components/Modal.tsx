@@ -6,7 +6,7 @@ interface ModalProps {
   variant: "AddSub" | "EditSub" | "Confirm";
   open: boolean;
   onClose: () => void;
-  onSubmit: (data: { description: string; price: string }) => void;
+  onSubmit?: (data: { description: string; price: string }) => void;
   confirmAction?: () => void;
 
   company?: string;
@@ -62,7 +62,9 @@ const Modal: React.FC<ModalProps> = ({
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                onSubmit({ description, price });
+                if (onSubmit) {
+                  onSubmit({ description, price });
+                }
                 onClose();
               }}
               className="flex flex-col w-full gap-6"
@@ -106,7 +108,9 @@ const Modal: React.FC<ModalProps> = ({
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                onSubmit({ description, price });
+                if (onSubmit) {
+                  onSubmit({ description, price });
+                }
                 onClose();
               }}
               className="flex flex-col w-full gap-6"
