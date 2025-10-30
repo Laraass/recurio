@@ -70,7 +70,7 @@ const EditModal: React.FC<EditModalProps> = ({
             type="button"
             onClick={() => {
               onSave(selectedRole);
-              onClose;
+              onClose();
             }}
           >
             Save changes
