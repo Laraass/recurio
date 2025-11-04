@@ -15,7 +15,7 @@ export const auth = async (request: FastifyRequest, reply: FastifyReply) => {
 
     const decoded = jwt.verify(
       token,
-      process.env.JWT_SECRET || "secretkey"
+      process.env.JWT_SECRET!
     ) as {
       userId: string;
       role: string;

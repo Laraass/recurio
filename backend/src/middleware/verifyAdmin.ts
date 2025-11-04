@@ -13,7 +13,7 @@ export const verifyAdmin = async (
     const token = authHeader.split(" ")[1] as string;
     const decoded = jwt.verify(
       token,
-      process.env.JWT_SECRET || "secretkey"
+      process.env.JWT_SECRET!
     ) as any;
 
     if (decoded.role !== "admin") {

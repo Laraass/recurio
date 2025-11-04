@@ -34,7 +34,7 @@ export const registerUser = async (
 
     const token = jwt.sign(
       { userId: user._id, role: user.role },
-      process.env.JWT_SECRET || "secretkey",
+      process.env.JWT_SECRET!,
       { expiresIn: "7d" }
     );
 
@@ -75,7 +75,7 @@ export const loginUser = async (
 
     const token = jwt.sign(
       { userId: user._id, role: user.role },
-      process.env.JWT_SECRET || "secretkey",
+      process.env.JWT_SECRET!,
       { expiresIn: "7d" }
     );
 
